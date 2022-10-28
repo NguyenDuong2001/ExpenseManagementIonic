@@ -1,0 +1,7 @@
+{
+  "name": "ExpenseManagementIonic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
