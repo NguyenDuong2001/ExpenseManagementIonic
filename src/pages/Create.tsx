@@ -87,7 +87,7 @@ const Create: React.FC = () => {
 	
 	return (
 		<IonPage>
-            <IonHeader collapse="condense">
+            <IonHeader>
 				<IonToolbar color="light" className='text-center'>
                 <IonTitle>Add Trip</IonTitle>
                 <IonButtons collapse={true} slot="start">

@@ -53,7 +53,7 @@ const Home: React.FC = () => {
     
 	return (
 		<IonPage>
-			<IonHeader collapse="condense">
+			<IonHeader>
 				<IonToolbar color="light" className='text-center'>
 					<IonTitle>Manager Trips</IonTitle>
 					<IonButtons collapse={true} slot="end">
