@@ -1,5 +1,5 @@
 import { IonButton, IonButtons, IonCardTitle, IonContent, IonHeader,IonIcon, IonItem, IonLabel, IonList, IonNote, IonPage, IonRouterLink, IonSearchbar, IonTitle, IonToolbar, useIonAlert, useIonToast } from '@ionic/react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { deleteTrip, getAllTrip, } from '../database';
 import { Trip } from '../models/Trip';
 import './Home.css';
@@ -9,12 +9,15 @@ import { useHistory } from 'react-router';
 
 const Home: React.FC = () => {
 	const [allTrip, setAllTrip] = useState<Trip[]>([])
-    const history = useHistory()
+    const history = useHistory();
+    const allTripRef = useRef<Trip[]>([]);
     const [presentAlert] = useIonAlert();
     const [present] = useIonToast();
     
-	const getTrips = async () => { 
-		setAllTrip(await getAllTrip())
+    const getTrips = async () => { 
+        const trips = await getAllTrip()
+		setAllTrip(trips)
+        allTripRef.current = trips;
     };
     
     const handleDelete = async (id: number) => { 
@@ -46,6 +49,15 @@ const Home: React.FC = () => {
             ],
         })
     }
+    const handleSearch = (e: any) => {
+        const value = e.target.value.trim().toLocaleLowerCase();
+        if (value=== "") {
+            getTrips();
+        } else {
+            const tripsSearch = allTripRef.current.filter(trip => trip.name.trim().toLocaleLowerCase().includes(value));
+            setAllTrip(tripsSearch)
+        }
+    }
 
 	useEffect(() => {
         getTrips();
@@ -64,7 +76,7 @@ const Home: React.FC = () => {
 				</IonToolbar>
 			</IonHeader>
 			<IonContent fullscreen={true}>
-				<IonSearchbar animated={true} placeholder="Search Trips"></IonSearchbar>
+				<IonSearchbar onIonChange={handleSearch} animated={true} placeholder="Search Trips"></IonSearchbar>
 				<IonList>
 					{allTrip.length === 0 ?
 						<div className="ion-text-center ion-margin-top">
